@@ -1,0 +1,8 @@
+name: SpawnersV2
+main: xtcy\spawnerv1\Loader
+api: 5.0.0
+version: 2.0.0
+
+permissions:
+  spawners.default:
+    default: true

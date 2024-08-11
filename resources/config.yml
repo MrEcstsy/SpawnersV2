@@ -1,0 +1,17 @@
+# Spawner Values
+values:
+  chicken: 500
+  pig: 750
+  cow: 1000
+  sheep: 1500
+  zombie: 2000
+  skeleton: 2500
+  creeper: 5000
+  spider: 4000
+  slime: 6000
+  blaze: 10000
+  enderman: 12000
+  magma: 15000
+  iron_golem: 25000
+  villager: 30000
+  wither_skeleton: 40000
