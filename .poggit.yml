@@ -1,0 +1,8 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/MrEcstsy/SpawnersV2
+build-by-default: true
+branches:
+- main
+projects:
+  SpawnersV2:
+    path: ""
+...
