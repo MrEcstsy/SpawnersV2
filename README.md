@@ -8,3 +8,4 @@ TODO:
 - [ ] Spawner Stacking
 - [ ] Optional cost to mine
 - [ ] More entities 
+- [ ] fix bug where if you have spawners in inventory and rejoin / restart the server the spawner blocks stop working.
