@@ -46,7 +46,7 @@ class CMonsterSpawner extends Spawnable
 
     public function __construct(World $world, Vector3 $pos){
         parent::__construct($world, $pos);
-
+        
         $this->handler = Loader::getInstance()->getScheduler()->scheduleRepeatingTask(
             new ClosureTask(
                 function() {
@@ -54,9 +54,8 @@ class CMonsterSpawner extends Spawnable
                 }
             ), 20
         );
-
     }
-
+    
     public function canUpdate() : Bool{
         return (
             $this->entityTypeId !== ":" and
@@ -68,23 +67,25 @@ class CMonsterSpawner extends Spawnable
         return $this->legacyEntityTypeId;
     }
 
-    public function setLegacyEntityId(Int $id) : Void{
+    public function setLegacyEntityId(int $id) : self {
         $this->entityTypeId = LegacyEntityIdToStringIdMap::getInstance()->legacyToString($this->legacyEntityTypeId = $id) ?? ':';
-        if(($block = $this->getBlock()) instanceof MonsterSpawner) $block->setLegacyEntityId($id);
+        return $this;
     }
 
     public function getEntityTypeId() : string{
         return $this->entityTypeId;
     }
 
-    public function setEntityId(String $id) : void{
+    public function setEntityId(string $id) : void {
         $this->legacyEntityTypeId = array_search(
             $this->entityTypeId = $id, LegacyEntityIdToStringIdMap::getInstance()->getLegacyToStringMap()
         );
-        if(($block = $this->getBlock()) instanceof MonsterSpawner) $block->setLegacyEntityId($this->legacyEntityTypeId);
+        if (($block = $this->getBlock()) instanceof MonsterSpawner) {
+            $block->setLegacyEntityId($this->legacyEntityTypeId);
+        }
     }
 
-    public function readSaveData(CompoundTag $nbt) : void{
+    public function readSaveData(CompoundTag $nbt) : void {
         $legacyIdTag = $nbt->getTag(self::TAG_LEGACY_ENTITY_TYPE_ID);
         if($legacyIdTag instanceof IntTag){
             $this->setLegacyEntityId($legacyIdTag->getValue());

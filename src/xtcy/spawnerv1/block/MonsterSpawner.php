@@ -29,10 +29,10 @@ class MonsterSpawner extends PMMobSpawner
         return parent::place($tx, $item, $replace, $clicked, $face, $click, $player);
     }
 
-    public function setLegacyEntityId(int $id) : self{
+    public function setLegacyEntityId(int $id) : self {
         $this->entityTypeId = LegacyEntityIdToStringIdMap::getInstance()->legacyToString($this->legacyEntityId = $id) ?? ':';
         return $this;
-    }
+    }    
 
     public function getLegacyEntityId() : Int{
         return $this->legacyEntityId;
@@ -48,30 +48,29 @@ class MonsterSpawner extends PMMobSpawner
 
     public function readStateFromWorld() : Block{
         parent::readStateFromWorld();
-
+    
         $tile = $this->position->getWorld()->getTile($this->position);
-
-        if(
-            $tile instanceof CMonsterSpawner and
-            $tile->getEntityTypeId() !== ':'
-        ){
+    
+        if ($tile instanceof CMonsterSpawner) {
             $this->entityTypeId = $tile->getEntityTypeId();
             $this->legacyEntityId = $tile->getLegacyEntityId();
-        }
-
+        } 
+    
         return $this;
     }
 
-    public function writeStateToWorld() : Void{
+    public function writeStateToWorld() : Void {
         parent::writeStateToWorld();
-
+    
         $tile = $this->position->getWorld()->getTile($this->position);
-
-        assert($tile instanceof CMonsterSpawner);
-
-        if($tile->getEntityTypeId() == ':') $tile->setLegacyEntityId($this->legacyEntityId);
+    
+        if ($tile instanceof CMonsterSpawner) {
+            if ($tile->getEntityTypeId() === ':') {
+                $tile->setLegacyEntityId($this->legacyEntityId);
+            }
+        }
     }
-
+    
     public function getSilkTouchDrops(Item $item) : array{
         $id = ($tile = $this->position->getWorld()->getTile($this->position)) instanceof CMonsterSpawner ? $tile->getLegacyEntityId() : $this->legacyEntityId;
         return [StringToItemParser::getInstance()->parse('52:'. $id) ?? items::MONSTER_SPAWNER()];

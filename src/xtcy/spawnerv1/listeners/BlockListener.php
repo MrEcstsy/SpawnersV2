@@ -20,25 +20,23 @@ class BlockListener implements Listener
 {
 
     public function onPlace(BlockPlaceEvent $event) {
-        if($event->isCancelled())return;
-
+        if($event->isCancelled()) return;
+    
         $item = $event->getItem();
-
         if(!$item instanceof ItemBlock) return;
-
+    
         $block = $item->getBlock();
-        if(
-            !$block instanceof MonsterSpawner or
-            $block instanceof PMMonsterSpawner
-        ){
+    
+        if(!$block instanceof PMMonsterSpawner || $block instanceof MonsterSpawner) {
             return;
         }
+    
         $transaction = $event->getTransaction();
-
         foreach($transaction->getBlocks() as [$x, $y, $z, $blocks]){
-            $transaction->addBlock($blocks->getPosition(), items::MONSTER_SPAWNER()->setLegacyEntityId(items::getSpawnerEntityId($item)));
+            $transaction->addBlock($blocks->getPosition()->asVector3(), items::MONSTER_SPAWNER()->setLegacyEntityId(items::getSpawnerEntityId($item)));
         }
     }
+    
 
     public function onSpawnerBreak(BlockBreakEvent $event): void
     {
@@ -89,11 +87,8 @@ class BlockListener implements Listener
         if ($tile instanceof CMonsterSpawner) {            
             $entityId = $tile->getEntityTypeId();
             $value = $tile->getSpawnerValue();
-            $playerName = $player->getName();
-    
-            $player->sendMessage("You interacted with a spawner of type: $entityId with a value of: $value");
-    
-            Loader::getInstance()->getLogger()->info("Player $playerName interacted with spawner of type: $entityId with value: $value");
+
+            
         }
     }
 }
